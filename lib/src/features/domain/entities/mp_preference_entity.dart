@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class MPPreferenceEntity extends Equatable {
-  final int? id;
+  final String? id;
   final String? initPoint;
 
   const MPPreferenceEntity({this.id, this.initPoint});

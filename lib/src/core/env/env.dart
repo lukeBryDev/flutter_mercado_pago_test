@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Env {
   late EnvMode _mode;
@@ -12,14 +13,14 @@ class Env {
     _instance._mode = mode;
     _instance._options = options;
 
-    _mpPublicKeySandbox = '';
-    _mpAccessTokenSandbox = '';
-    _mpPublicKeyProduction = '';
-    _mpAccessTokenProduction = '';
-    mpClientId = '';
-    mpClientSecret = '';
+    _mpPublicKeySandbox = dotenv.env['mpPublicKeySandbox'] ?? '';
+    _mpAccessTokenSandbox = dotenv.env['mpAccessTokenSandbox'] ?? '';
+    _mpPublicKeyProduction = dotenv.env['mpPublicKeyProduction'] ?? '';
+    _mpAccessTokenProduction = dotenv.env['mpAccessTokenProduction'] ?? '';
+    mpClientId = dotenv.env['mpClientId'] ?? '';
+    mpClientSecret = dotenv.env['mpClientSecret'] ?? '';
 
-     return _instance;
+    return _instance;
   }
 
   static String _mpPublicKeySandbox = '';

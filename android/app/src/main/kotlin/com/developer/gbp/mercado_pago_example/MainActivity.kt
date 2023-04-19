@@ -1,21 +1,85 @@
 package com.developer.gbp.mercado_pago_example
 
-import androidx.annotation.NonNull
+
+import android.app.Activity
+import android.content.Intent
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import com.mercadopago.android.px.core.MercadoPagoCheckout
+import com.mercadopago.android.px.model.Payment
+
 
 class MainActivity : FlutterActivity() {
-    private val CHANNEL = "com.developer.gbp.mercado_pago_example"
+    private val CHANNELMP = "developergbp.com/mercadoPago"
+    private val CHANNELMPRES = "developergbp.com/mercadoPago/response"
+    private val REQUEST_CODE = 1
 
-    override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        initFlutterChannels()
         super.configureFlutterEngine(flutterEngine)
-        MethodChannel(
-            flutterEngine.dartExecutor.binaryMessenger,
-            CHANNEL
-        ).setMethodCallHandler { call, result ->
+    }
+
+    private fun initFlutterChannels() {
+        val channelMercadoPago = flutterEngine?.dartExecutor?.let {
+            MethodChannel(
+                it.binaryMessenger,
+                CHANNELMP
+            )
+        }
+        channelMercadoPago?.setMethodCallHandler { call, result ->
             // This method is invoked on the main thread.
-            // TODO
+            val args = call.arguments as HashMap<String, Any>;
+            val publicKey = args["publicKey"] as String;
+            val preferenceId = args["preferenceId"] as String;
+
+            when (call.method) {
+                "mercadoPago" -> mercadoPago(publicKey, preferenceId, result)
+                else -> return@setMethodCallHandler
+            }
+        }
+    }
+
+    private fun mercadoPago(
+        publicKey: String,
+        preferenceId: String,
+        channelResult: MethodChannel.Result
+    ) {
+        MercadoPagoCheckout.Builder(publicKey, preferenceId).build()
+            .startPayment(this@MainActivity, REQUEST_CODE);
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        val channelMercadoPagoResponse = flutterEngine?.dartExecutor?.let {
+            MethodChannel(
+                it.binaryMessenger,
+                CHANNELMPRES
+            )
+        }
+
+        if (resultCode == MercadoPagoCheckout.PAYMENT_RESULT_CODE) {
+            val payment =
+                data!!.getSerializableExtra(MercadoPagoCheckout.EXTRA_PAYMENT_RESULT) as Payment
+            val paymentStatus = payment.paymentStatus
+            val paymentStatusDetail = payment.paymentStatusDetail
+            val paymentId = payment.id
+
+            val arrayList = ArrayList<String>()
+            arrayList.add(paymentId.toString())
+            arrayList.add(paymentStatus)
+            arrayList.add(paymentStatusDetail)
+            channelMercadoPagoResponse?.invokeMethod("mercadoPagoOK", arrayList)
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            val arrayList = ArrayList<kotlin.String>()
+            arrayList.add("paymentError")
+            channelMercadoPagoResponse?.invokeMethod("mercadoPagoOK", arrayList)
+        } else {
+            val arrayList = ArrayList<kotlin.String>()
+            arrayList.add("paymentCancelled")
+            channelMercadoPagoResponse?.invokeMethod("mercadoPagoOK", arrayList)
         }
     }
 }
