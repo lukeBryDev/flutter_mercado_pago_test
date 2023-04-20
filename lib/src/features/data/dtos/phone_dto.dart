@@ -5,6 +5,6 @@ class PhoneDTO {
   PhoneDTO({required this.areaCode, required this.number});
 
   Map<String, dynamic> toJson() {
-    return {"area_code": areaCode, "number": number};
+    return {"area_code": areaCode.toString(), "number": number.toString()};
   }
 }

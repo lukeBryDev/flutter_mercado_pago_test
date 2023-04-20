@@ -1,8 +1,5 @@
-import 'package:mercado_pago_example/src/features/data/dtos/address_dto.dart';
 import 'package:mercado_pago_example/src/features/data/dtos/excluded_payment_dto.dart';
-import 'package:mercado_pago_example/src/features/data/dtos/identification_dto.dart';
-import 'package:mercado_pago_example/src/features/data/dtos/phone_dto.dart';
-
+/// visit https://www.mercadopago.com.co/developers/es/docs/resources-faqs/payments#bookmark_los_medios_de_pago_no_aparecen_en_mi_checkout
 class MPPaymentMethodsDTO {
   final List<ExcludedPaymentDTO>? excludedPaymentMethods;
   final List<ExcludedPaymentDTO>? excludedPaymentTypes;
