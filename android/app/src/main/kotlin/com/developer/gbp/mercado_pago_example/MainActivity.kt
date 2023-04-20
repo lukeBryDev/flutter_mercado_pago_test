@@ -73,15 +73,8 @@ class MainActivity : FlutterActivity() {
                 "paymentStatus" to paymentStatus,
                 "paymentStatusDetail" to paymentStatusDetail
             )
-            val arrayList = ArrayList<String>()
-
-            arrayList.add(paymentId.toString())
-            arrayList.add(paymentStatus)
-            arrayList.add(paymentStatusDetail)
             channelMercadoPagoResponse?.invokeMethod("mercadoPagoOK", mapRes)
         } else if (resultCode == Activity.RESULT_CANCELED) {
-            val arrayList = ArrayList<kotlin.String>()
-            arrayList.add("paymentError")
             val mapRes = mapOf<String, Any>(
                 "message" to "paymentError",
             )
@@ -90,8 +83,6 @@ class MainActivity : FlutterActivity() {
             val mapRes = mapOf<String, Any>(
                 "message" to "paymentCancelled",
             )
-            val arrayList = ArrayList<kotlin.String>()
-            arrayList.add("paymentCancelled")
             channelMercadoPagoResponse?.invokeMethod("mercadoPagoCancelled", mapRes)
         }
     }
