@@ -8,6 +8,6 @@ void main() async {
 
   await dotenv.load(fileName: "./environments/.env.main");
 
-  Env(EnvMode.sandbox, const EnvOptions(stageNumberSandbox: 2));
+  Env(EnvMode.sandbox);
   runApp(const App());
 }

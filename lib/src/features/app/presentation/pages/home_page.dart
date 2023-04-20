@@ -80,11 +80,81 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void _showInfoModal() {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 250,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Text('Test Payment Method'),
+                const SizedBox(height: 50),
+                Column(
+                  children: [
+                    const Text('Copy card number'),
+                    const SizedBox(height: 10),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Row(
+                          children: [
+                            const Text(
+                              'Tarjeta: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(Env.mpPaymentCardTestName),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Text(
+                              'Número: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            SelectableText(Env.mpPaymentCardTestNumber),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Text(
+                              'Código de seguridad: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            SelectableText(
+                                Env.mpPaymentCardTestExpirationSecurityCode),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            const Text(
+                              'Fecha de caducidad: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            SelectableText(Env.mpPaymentCardTestExpirationDate),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  child: const Text('Close BottomSheet'),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   void _mercadoPagoOK(MPPaymentResultEntity? res) {
-    log(res.toString(), name: 'ok res');
-    log('${res?.id}', name: 'id');
-    log('${res?.status}', name: 'status');
-    log('${res?.statusDetail}', name: 'statusDetail');
     setState(() {
       mpPaymentResult = res;
     });
@@ -217,13 +287,22 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           const Text(
             'You have to pay:',
           ),
-          Text(
-            '\$$_counter',
-            style: Theme.of(context).textTheme.headlineMedium,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                '\$$_counter',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              IconButton(
+                  onPressed: () => _showInfoModal(),
+                  icon: const Icon(Icons.info))
+            ],
           ),
           IgnorePointer(
             ignoring: _loading || _counter <= 999.0,
@@ -280,13 +359,22 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: const [
                     SizedBox(
-                      child: Text('Price', style: TextStyle(fontWeight: FontWeight.bold),),
+                      child: Text(
+                        'Price',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                     SizedBox(
-                      child: Text('Status', style: TextStyle(fontWeight: FontWeight.bold),),
+                      child: Text(
+                        'Status',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                     SizedBox(
-                      child: Text('Status detail', style: TextStyle(fontWeight: FontWeight.bold),),
+                      child: Text(
+                        'Status detail',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ],
                 ),
@@ -307,8 +395,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Flexible(
                       child: SizedBox(
-                        child: Text(
-                            mpPaymentResult?.statusDetail?.message ?? ''),
+                        child:
+                            Text(mpPaymentResult?.statusDetail?.message ?? ''),
                       ),
                     ),
                   ],
