@@ -1,16 +1,19 @@
 # mercado_pago_example
 
-Mercado pago implementation
+Mercado pago native (via method channels) implementation on Android and iOS.
+
+Flutter implementation
+of [MercadoPago Mobile Checkout](https://www.mercadopago.com.ar/developers/es/guides/payments/mobile-checkout/introduction/)
+
+This project use Flutter v3.7.1
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+If you wanna try this example you have create an archive on ```environments/``` folder (create too)
+called ```.env.main``` and set the value from mercado pago developer account
 
-A few resources to get you started if this is your first Flutter project:
+For android, view the
+[mercado pago checkout payment](https://github.com/mercadopago/px-android).
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+For iOS, view the
+[mercado pago checkout payment](https://cocoapods.org/pods/MercadoPagoSDK).

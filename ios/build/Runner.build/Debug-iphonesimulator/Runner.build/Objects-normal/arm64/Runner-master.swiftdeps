@@ -1,0 +1,6 @@
+version: "Apple Swift version 5.8 (swiftlang-5.8.0.124.2 clang-1403.0.22.11.100)"
+options: "3ba50714e4d6ab692a7b8628afce06de6530f42f065051e2bb332d13ad8dc36d"
+build_start_time: [1682076912, 595028000]
+build_end_time: [1682076912, 689797000]
+inputs:
+  "/Users/developergbp/StudioProjects/mercado_pago_example/ios/Runner/AppDelegate.swift": !private [1682033139, 27609283]
